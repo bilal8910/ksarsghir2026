@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title id="page-title">مقال — Ksar Sghir</title>
   <meta name="description" id="page-desc" content=""/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" id="page-canonical" href=""/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article"/>
   <meta property="og:title" id="og-title" content=""/>
   <meta property="og:description" id="og-desc" content=""/>
   <meta property="og:image" id="og-image" content=""/>
+  <meta property="og:url" id="og-url" content=""/>
+  <meta property="og:site_name" content="Ksar Sghir"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" id="tw-title" content=""/>
+  <meta name="twitter:description" id="tw-desc" content=""/>
+  <meta name="twitter:image" id="tw-image" content=""/>
+
+  <!-- JSON-LD: BlogPosting -->
+  <script type="application/ld+json" id="jsonld-post"></script>
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json" id="jsonld-breadcrumb"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
@@ -15,15 +34,28 @@
 </head>
 <body>
 
-  <header class="header">
-    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+  <!-- ===== HEADER ===== -->
+  <header class="header" role="banner">
+    <a href="../" class="header__logo" aria-label="Ksar Sghir">
+      <span class="header__logo-icon" aria-hidden="true">🏖️</span>
+      <span class="header__logo-text">
+        <span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span>
+        <span class="header__logo-en">KSAR SGHIR · MAROC</span>
+      </span>
+    </a>
     <div class="header__actions">
-      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
-      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+      <div class="lang-switch" role="group" aria-label="اختر اللغة">
+        <button class="lang-btn active" data-lang="ar">AR</button>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()" aria-label="تبديل الوضع">☀️</button>
     </div>
   </header>
 
-  <nav class="nav">
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" role="navigation" aria-label="القائمة الرئيسية">
     <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
     <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
     <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>
@@ -33,67 +65,97 @@
     <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>
   </nav>
 
+  <!-- Breadcrumb -->
   <div class="container">
-    <nav class="breadcrumb" id="breadcrumb">
-      <a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><a href="/">المدونة</a><span class="breadcrumb__separator">/</span><span id="bc-title">...</span>
+    <nav class="breadcrumb" aria-label="مسار التنقل">
+      <a href="../">الرئيسية</a>
+      <span class="breadcrumb__separator" aria-hidden="true">/</span>
+      <a href="/">المدونة</a>
+      <span class="breadcrumb__separator" aria-hidden="true">/</span>
+      <span id="bc-title">...</span>
     </nav>
   </div>
 
-  <!-- Loading State -->
+  <!-- ===== LOADING STATE ===== -->
   <div id="post-loading" class="section">
     <div class="container" style="max-width:800px;text-align:center;padding:60px 0">
-      <div style="font-size:48px;margin-bottom:16px">⏳</div>
-      <p style="color:var(--text2)">جاري تحميل الموضوع...</p>
+      <div class="skeleton" style="width:200px;height:200px;border-radius:50%;margin:0 auto 16px"></div>
+      <div class="skeleton" style="width:300px;height:24px;margin:0 auto 8px"></div>
+      <div class="skeleton" style="width:200px;height:16px;margin:0 auto"></div>
     </div>
   </div>
 
-  <!-- Post Content (hidden until loaded) -->
+  <!-- ===== POST CONTENT ===== -->
   <div id="post-content" style="display:none">
+
+    <!-- Featured Image -->
     <section class="hero" style="height:380px">
       <div class="hero__slide active" id="post-hero-img" style="background-size:cover;background-position:center">
         <div class="hero__overlay"></div>
       </div>
       <div class="hero__content">
         <span class="hero__badge" id="post-category-badge">...</span>
-        <h1 class="hero__title" id="post-title">...</h1>
-        <p class="hero__desc" id="post-excerpt">...</p>
+        <h1 class="hero__title" id="post-title" style="font-size:clamp(24px,4vw,36px)">...</h1>
+        <p class="hero__desc" id="post-excerpt" style="max-width:700px">...</p>
       </div>
     </section>
 
+    <!-- Article -->
     <main class="section" role="main">
       <div class="container" style="max-width:800px">
-        <article>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;color:var(--text3);font-size:13px">
-            <time id="post-date" datetime="">...</time>
-            <span>•</span>
-            <span id="post-cat-text">...</span>
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+
+          <!-- Meta Bar -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;color:var(--text3);font-size:13px;flex-wrap:wrap">
+            <time id="post-date" datetime="" itemprop="datePublished">...</time>
+            <span aria-hidden="true">•</span>
+            <span id="post-cat-text" itemprop="articleSection">...</span>
+            <span aria-hidden="true">•</span>
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+              <span itemprop="name">Bilal El Hichou</span>
+            </span>
           </div>
+
+          <!-- Featured Image Card (visible on mobile) -->
+          <figure style="margin-bottom:24px;border-radius:var(--radius-lg);overflow:hidden;display:none" id="post-figure">
+            <img id="post-feature-img" src="" alt="" style="width:100%;height:auto;display:block" itemprop="image"/>
+            <figcaption style="padding:8px;font-size:12px;color:var(--text3);background:var(--bg2)" id="post-img-caption"></figcaption>
+          </figure>
 
           <!-- Post Body: switches by language -->
-          <div id="body-ar" class="post-body" style="color:var(--text2);line-height:1.9;font-size:16px"></div>
-          <div id="body-fr" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
-          <div id="body-en" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
-          <div id="body-es" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
+          <div id="body-ar" class="post-body" style="color:var(--text2);line-height:1.9;font-size:16px" itemprop="articleBody"></div>
+          <div id="body-fr" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px" itemprop="articleBody"></div>
+          <div id="body-en" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px" itemprop="articleBody"></div>
+          <div id="body-es" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px" itemprop="articleBody"></div>
 
-          <!-- Share -->
-          <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
-            <span style="color:var(--text3);font-size:13px;line-height:36px">شارك:</span>
-            <a id="share-whatsapp" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:var(--success);border-color:var(--success)">💬 WhatsApp</a>
-            <a id="share-facebook" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:#1877f2;border-color:#1877f2">📘 Facebook</a>
-            <button class="btn btn--sm btn--outline" onclick="copyPostLink()">📋 نسخ الرابط</button>
-          </div>
+          <!-- Tags -->
+          <div id="post-tags" style="margin-top:24px;display:flex;gap:6px;flex-wrap:wrap"></div>
+
         </article>
 
+        <!-- Share -->
+        <div style="margin-top:32px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+          <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--text)">📤 شارك هذا الموضوع</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a id="share-whatsapp" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:#25d366;border-color:#25d366">💬 WhatsApp</a>
+            <a id="share-facebook" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:#1877f2;border-color:#1877f2">📘 Facebook</a>
+            <a id="share-twitter" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:#1da1f2;border-color:#1da1f2">🐦 Twitter</a>
+            <button class="btn btn--sm btn--outline" onclick="copyPostLink()">📋 نسخ الرابط</button>
+          </div>
+        </div>
+
         <!-- Related Posts -->
-        <div style="margin-top:48px">
+        <div style="margin-top:40px">
           <h3 style="font-size:18px;font-weight:900;margin-bottom:16px;color:var(--text)">📝 مواضيع ذات صلة</h3>
           <div class="grid grid-3" id="related-posts"></div>
         </div>
+
       </div>
     </main>
+
   </div>
 
-  <!-- 404 State -->
+  <!-- ===== 404 STATE ===== -->
   <div id="post-404" style="display:none" class="section">
     <div class="container" style="max-width:800px;text-align:center;padding:60px 0">
       <div style="font-size:64px;margin-bottom:16px">🔍</div>
@@ -103,8 +165,42 @@
     </div>
   </div>
 
-  <footer class="footer">
+  <!-- ===== FOOTER (Same as Homepage) ===== -->
+  <footer class="footer" role="contentinfo">
     <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="footer__brand-name" data-i18n="site-name">القصر الصغير</span>
+          <p class="footer__brand-desc" data-i18n="footer-desc">بوابتك الرقمية لاكتشاف أجمل وجهات شمال المغرب</p>
+          <div class="footer__social">
+            <a href="https://www.facebook.com/ksarsghircity" target="_blank" rel="noopener" class="footer__social-link">📘 ksarsghircity 21K</a>
+            <a href="https://www.facebook.com/KsarSghirLens" target="_blank" rel="noopener" class="footer__social-link">📸 Ksar Sghir Lens 56K</a>
+            <a href="https://wa.me/212708053745" target="_blank" rel="noopener" class="footer__social-link">💬 WhatsApp</a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title" data-i18n="footer-tourism">🗺️ السياحة</h4>
+          <a href="../tourism/plage.html">شاطئ القصر الصغير</a>
+          <a href="../tourism/belyounech.html">قرية بليونش</a>
+          <a href="../tourism/port.html">ميناء الصيد</a>
+          <a href="../tourism/tangermed.html">طنجة المتوسط</a>
+          <a href="../tourism/dalia.html">شاطئ الدالية</a>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title" data-i18n="footer-sites">🔗 المواقع</h4>
+          <a href="../gallery/">معرض الصور</a>
+          <a href="/">المدونة</a>
+          <a href="../store/">المتجر</a>
+          <a href="../weather/">الطقس والبحر</a>
+          <a href="../prayer/">مواقيت الصلاة</a>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title" data-i18n="footer-info">📄 معلومات</h4>
+          <a href="../about.html" data-i18n="footer-about">من نحن</a>
+          <a href="../privacy.html" data-i18n="footer-privacy">الخصوصية</a>
+          <a href="https://wa.me/212708053745" target="_blank" rel="noopener" data-i18n="footer-contact">اتصل بنا</a>
+        </div>
+      </div>
       <div class="footer__bottom">
         <div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div>
         <div class="footer__legal">
@@ -116,11 +212,12 @@
     </div>
   </footer>
 
-  <script src="../assets/js/i18n.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <!-- Scripts -->
+  <script defer src="../assets/js/i18n.js"></script>
+  <script defer src="../assets/js/main.js"></script>
   <script>
   (function() {
-    /* Get slug from URL: post.html?slug=plage-ksarsghir OR post/plage-ksarsghir.html */
+    /* Get slug from URL */
     var slug = null;
     var params = new URLSearchParams(window.location.search);
     slug = params.get("slug");
@@ -129,15 +226,12 @@
       var match = path.match(/\/([^\/]+)\.html$/);
       if (match) slug = match[1];
     }
-    /* Also handle clean URLs like /blog/plage-ksarsghir */
     if (!slug) {
-      var path2 = window.location.pathname;
-      var parts = path2.split("/").filter(Boolean);
+      var parts = window.location.pathname.split("/").filter(Boolean);
       if (parts.length > 0 && !parts[parts.length-1].includes(".")) {
         slug = parts[parts.length-1];
       }
     }
-
     if (!slug) { show404(); return; }
 
     fetch("../data/posts.json")
@@ -153,6 +247,7 @@
   function renderPost(post, allPosts) {
     var lang = KS.getLang();
     var siteUrl = "https://www.ksarsghir.com";
+    var postUrl = siteUrl + "/blog/post.html?slug=" + post.slug;
 
     /* Title & Meta */
     var title = post.title[lang] || post.title.ar;
@@ -165,10 +260,57 @@
     document.title = title + " | Ksar Sghir Blog";
     document.getElementById("page-title").textContent = title;
     document.getElementById("page-desc").content = excerpt;
+    document.getElementById("page-canonical").href = postUrl;
     document.getElementById("og-title").content = title;
     document.getElementById("og-desc").content = excerpt;
     document.getElementById("og-image").content = img;
+    document.getElementById("og-url").content = postUrl;
+    document.getElementById("tw-title").content = title;
+    document.getElementById("tw-desc").content = excerpt;
+    document.getElementById("tw-image").content = img;
     document.getElementById("bc-title").textContent = title;
+
+    /* JSON-LD BlogPosting */
+    var jsonldPost = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": excerpt,
+      "image": img,
+      "url": postUrl,
+      "datePublished": date,
+      "author": {
+        "@type": "Person",
+        "name": "Bilal El Hichou",
+        "url": siteUrl + "/about.html"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ksar Sghir",
+        "logo": {
+          "@type": "ImageObject",
+          "url": siteUrl + "/assets/images/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": postUrl
+      },
+      "articleSection": catAr
+    };
+    document.getElementById("jsonld-post").textContent = JSON.stringify(jsonldPost);
+
+    /* JSON-LD BreadcrumbList */
+    var jsonldBreadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"name":"الرئيسية","item":siteUrl},
+        {"@type":"ListItem","position":2,"name":"المدونة","item":siteUrl+"/blog/"},
+        {"@type":"ListItem","position":3,"name":title,"item":postUrl}
+      ]
+    };
+    document.getElementById("jsonld-breadcrumb").textContent = JSON.stringify(jsonldBreadcrumb);
 
     /* Hero */
     document.getElementById("post-hero-img").style.backgroundImage = "url('" + img + "')";
@@ -178,6 +320,14 @@
     document.getElementById("post-date").textContent = date;
     document.getElementById("post-date").datetime = date;
     document.getElementById("post-cat-text").textContent = catAr;
+
+    /* Featured Image Card */
+    var figEl = document.getElementById("post-figure");
+    var imgEl = document.getElementById("post-feature-img");
+    imgEl.src = img;
+    imgEl.alt = title;
+    document.getElementById("post-img-caption").textContent = title;
+    if (window.innerWidth <= 768) figEl.style.display = "block";
 
     /* Body per language */
     var bodyAr = (post.content && post.content.ar) ? post.content.ar : "<p>" + (post.excerpt.ar || "") + "</p>";
@@ -190,15 +340,20 @@
     document.getElementById("body-en").innerHTML = bodyEn;
     document.getElementById("body-es").innerHTML = bodyEs;
 
-    /* Show correct body based on current language */
     document.querySelectorAll(".post-body").forEach(function(el) { el.style.display = "none"; });
     document.getElementById("body-" + lang).style.display = "block";
 
+    /* Tags */
+    var tagsHtml = '<span class="card__meta-item">' + cat + '</span>';
+    tagsHtml += '<span class="card__meta-item">Ksar Sghir</span>';
+    tagsHtml += '<span class="card__meta-item">North Morocco</span>';
+    document.getElementById("post-tags").innerHTML = tagsHtml;
+
     /* Share links */
-    var shareUrl = siteUrl + "/blog/" + post.slug + ".html";
-    var shareText = title + " — Ksar Sghir";
-    document.getElementById("share-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent(shareText + "\n" + shareUrl);
-    document.getElementById("share-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl);
+    var shareText = encodeURIComponent(title + " — Ksar Sghir\n" + postUrl);
+    document.getElementById("share-whatsapp").href = "https://wa.me/?text=" + shareText;
+    document.getElementById("share-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(postUrl);
+    document.getElementById("share-twitter").href = "https://twitter.com/intent/tweet?text=" + shareText;
 
     /* Language switch for body */
     document.querySelectorAll(".lang-btn").forEach(function(btn) {
@@ -208,14 +363,18 @@
         var bodyEl = document.getElementById("body-" + l);
         if (bodyEl) bodyEl.style.display = "block";
         var t = post.title[l] || post.title.ar;
+        var e = post.excerpt[l] || post.excerpt.ar;
+        var c = post.category[l] || post.category.ar;
         document.getElementById("post-title").textContent = t;
-        document.getElementById("post-excerpt").textContent = post.excerpt[l] || post.excerpt.ar;
-        document.getElementById("post-category-badge").textContent = post.category[l] || post.category.ar;
+        document.getElementById("post-excerpt").textContent = e;
+        document.getElementById("post-category-badge").textContent = c;
         document.title = t + " | Ksar Sghir Blog";
+        document.getElementById("og-title").content = t;
+        document.getElementById("og-desc").content = e;
       });
     });
 
-    /* Related posts (same category) */
+    /* Related posts */
     var related = allPosts.filter(function(p) {
       return p.slug !== post.slug && p.category.ar === catAr;
     }).slice(0, 3);
@@ -226,7 +385,13 @@
     related.forEach(function(p) {
       var t = p.title[lang] || p.title.ar;
       var c = p.category[lang] || p.category.ar;
-      relHtml += '<article class="post-card"><div class="post-card__thumb" style="background-image:url(\'' + p.image + '\')"><span class="post-card__category">' + c + '</span></div><div class="post-card__body"><time class="post-card__date">' + p.date + '</time><h3 class="post-card__title"><a href="post.html?slug=' + p.slug + '">' + t + '</a></h3></div></article>';
+      relHtml += '<article class="post-card">' +
+        '<div class="post-card__thumb" style="background-image:url(\'' + p.image + '\')">' +
+        '<span class="post-card__category">' + c + '</span></div>' +
+        '<div class="post-card__body">' +
+        '<time class="post-card__date">' + p.date + '</time>' +
+        '<h3 class="post-card__title"><a href="post.html?slug=' + p.slug + '">' + t + '</a></h3>' +
+        '</div></article>';
     });
     document.getElementById("related-posts").innerHTML = relHtml;
 

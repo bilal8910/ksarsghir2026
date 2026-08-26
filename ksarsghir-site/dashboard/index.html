@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>لوحة التحكم — Ksar Sghir Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0a0f1a;--bg2:#16213e;--bg3:#1a2a40;--text:#e0e0e0;--text2:#aab4c2;--text3:#6b7b8d;--border:rgba(0,180,216,0.15);--accent:#00b4d8;--accent-hover:#0096c7;--gold:#c29b62;--success:#2ecc71;--danger:#e74c3c;--warning:#f39c12;--radius:10px;--shadow:0 4px 16px rgba(0,0,0,0.2);}
+    body.light{--bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8edf5;--text:#1a1a2e;--text2:#4a5568;--text3:#a0aec0;--border:rgba(0,180,216,0.2);--shadow:0 4px 16px rgba(0,0,0,0.08);}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .dash{display:flex;min-height:100vh;}
+    .sidebar{width:240px;background:var(--bg2);border-left:1px solid var(--border);padding:20px 0;position:fixed;height:100vh;overflow-y:auto;z-index:100;}
+    .sidebar__logo{text-align:center;padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+    .sidebar__logo h2{font-size:18px;color:var(--accent);}
+    .sidebar__logo small{font-size:11px;color:var(--text3);}
+    .sidebar__nav a{display:flex;align-items:center;gap:10px;padding:12px 20px;color:var(--text2);text-decoration:none;font-size:14px;font-weight:600;transition:all 0.2s;border-right:3px solid transparent;}
+    .sidebar__nav a:hover,.sidebar__nav a.active{color:var(--accent);background:rgba(0,180,216,0.05);border-right-color:var(--accent);}
+    .main{margin-right:240px;flex:1;padding:20px 30px;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+    .topbar h1{font-size:22px;font-weight:900;}
+    .topbar__actions{display:flex;gap:8px;}
+    .btn{padding:8px 18px;font-size:13px;font-weight:700;border:none;border-radius:var(--radius);cursor:pointer;font-family:'Tajawal',sans-serif;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
+    .btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:var(--accent-hover);}
+    .btn-success{background:var(--success);color:#fff;}.btn-success:hover{opacity:0.9;}
+    .btn-danger{background:var(--danger);color:#fff;}.btn-danger:hover{opacity:0.9;}
+    .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent);}.btn-outline:hover{background:rgba(0,180,216,0.1);}
+    .btn-sm{padding:5px 12px;font-size:12px;}
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+    .card h3{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--accent);}
+    .form-group{margin-bottom:14px;}
+    .form-group label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:4px;}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'Tajawal',sans-serif;transition:border-color 0.2s;}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent);outline:none;}
+    .form-group textarea{min-height:100px;resize:vertical;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .table-wrap{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--border);}
+    th{background:var(--bg3);font-weight:700;color:var(--accent);font-size:12px;}
+    tr:hover{background:rgba(0,180,216,0.03);}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+    .badge-ar{background:rgba(0,180,216,0.15);color:var(--accent);}
+    .badge-fr{background:rgba(46,204,113,0.15);color:var(--success);}
+    .badge-en{background:rgba(243,156,18,0.15);color:var(--warning);}
+    .badge-es{background:rgba(155,89,182,0.15);color:#9b59b6;}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center;}
+    .modal.show{display:flex;}
+    .modal__content{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:90%;max-width:700px;max-height:80vh;overflow-y:auto;}
+    .modal__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .modal__header h3{font-size:18px;font-weight:900;color:var(--accent);}
+    .modal__close{background:none;border:none;color:var(--text3);font-size:24px;cursor:pointer;}
+    .tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+    .tab{padding:8px 16px;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;font-family:'Tajawal',sans-serif;}
+    .tab:hover{color:var(--accent);}
+    .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+    .tab-content{display:none;}.tab-content.active{display:block;}
+    .stat-box{text-align:center;padding:16px;background:var(--bg3);border-radius:var(--radius);}
+    .stat-box__num{font-size:28px;font-weight:900;color:var(--accent);}
+    .stat-box__label{font-size:12px;color:var(--text2);margin-top:4px;}
+    .empty-state{text-align:center;padding:40px;color:var(--text3);}
+    .empty-state__icon{font-size:48px;margin-bottom:12px;}
+    .alert{padding:12px 16px;border-radius:var(--radius);font-size:13px;margin-bottom:12px;}
+    .alert-success{background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.3);color:var(--success);}
+    .alert-danger{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);color:var(--danger);}
+    @media(max-width:768px){.sidebar{display:none;}.main{margin-right:0;}.form-row,.grid-3,.grid-2{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <h2>🏖️ Ksar Sghir</h2>
+      <small>لوحة التحكم v1.0</small>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="#" class="active" onclick="showSection('dashboard')">📊 الرئيسية</a>
+      <a href="#" onclick="showSection('posts')">✍️ المواضيع</a>
+      <a href="#" onclick="showSection('tourism')">🗺️ السياحة</a>
+      <a href="#" onclick="showSection('gallery')">📸 المعرض</a>
+      <a href="#" onclick="showSection('settings')">⚙️ الإعدادات</a>
+      <a href="#" onclick="showSection('export')">📤 تصدير</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <h1 id="section-title">📊 لوحة التحكم</h1>
+      <div class="topbar__actions">
+        <button class="btn btn-outline btn-sm" onclick="toggleDashTheme()">🌙</button>
+        <a href="../" class="btn btn-outline btn-sm" target="_blank">🌐 عرض الموقع</a>
+      </div>
+    </div>
+
+    <div id="alert-area"></div>
+
+    <!-- Dashboard Section -->
+    <div id="sec-dashboard" class="sec">
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="stat-box"><div class="stat-box__num" id="stat-posts">0</div><div class="stat-box__label">المواضيع</div></div>
+        <div class="stat-box"><div class="stat-box__num" id="stat-tourism">6</div><div class="stat-box__label">الوجهات السياحية</div></div>
+        <div class="stat-box"><div class="stat-box__num" id="stat-gallery">6</div><div class="stat-box__label">الصور</div></div>
+      </div>
+      <div class="card">
+        <h3>🚀 إجراءات سريعة</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="showSection('posts');openPostModal()">+ موضوع جديد</button>
+          <button class="btn btn-outline" onclick="showSection('tourism')">إدارة الوجهات</button>
+          <button class="btn btn-outline" onclick="showSection('export')">تصدير البيانات</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div id="sec-posts" class="sec" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:18px">✍️ إدارة المواضيع</h2>
+        <button class="btn btn-primary" onclick="openPostModal()">+ موضوع جديد</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>العنوان (AR)</th><th>التصنيف</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+            <tbody id="posts-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tourism Section -->
+    <div id="sec-tourism" class="sec" style="display:none">
+      <h2 style="font-size:18px;margin-bottom:16px">🗺️ إدارة الوجهات السياحية</h2>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>الاسم (AR)</th><th>النوع</th><th>الرابط</th><th>إجراءات</th></tr></thead>
+            <tbody>
+              <tr><td>القصر الصغير التاريخي</td><td>تاريخ</td><td>ksarsghir.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+              <tr><td>شاطئ القصر الصغير</td><td>شاطئ</td><td>plage.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+              <tr><td>بليونش</td><td>قرية</td><td>belyounech.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+              <tr><td>ميناء الصيد التقليدي</td><td>ميناء</td><td>port.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+              <tr><td>طنجة المتوسط</td><td>ميناء دولي</td><td>tangermed.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+              <tr><td>شاطئ الدالية</td><td>شاطئ</td><td>dalia.html</td><td><button class="btn btn-outline btn-sm">تعديل</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div id="sec-gallery" class="sec" style="display:none">
+      <h2 style="font-size:18px;margin-bottom:16px">📸 إدارة المعرض</h2>
+      <div class="card">
+        <p style="color:var(--text2);font-size:14px">للإضافة: أضف رابط الصورة في ملف <code>data/posts.json</code> أو <code>data/gallery.json</code></p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+          <div style="aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:8px;background-image:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s300/8510.jpg')"></div>
+          <div style="aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:8px;background-image:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s300/3385.jpg')"></div>
+          <div style="aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:8px;background-image:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s300/4353.jpg')"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Section -->
+    <div id="sec-settings" class="sec" style="display:none">
+      <h2 style="font-size:18px;margin-bottom:16px">⚙️ إعدادات الموقع</h2>
+      <div class="card">
+        <h3>معلومات الموقع</h3>
+        <div class="form-row">
+          <div class="form-group"><label>اسم الموقع (AR)</label><input type="text" value="القصر الصغير" id="set-name-ar"/></div>
+          <div class="form-group"><label>اسم الموقع (EN)</label><input type="text" value="Ksar Sghir" id="set-name-en"/></div>
+        </div>
+        <div class="form-group"><label>وصف الموقع</label><textarea id="set-desc">بوابتك الرقمية لاكتشاف أجمل وجهات شمال المغرب — سياحة، صور، طقس ومعلومات محلية.</textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>رقم WhatsApp</label><input type="text" value="212708053745" id="set-whatsapp"/></div>
+          <div class="form-group"><label>رابط الموقع</label><input type="text" value="https://www.ksarsghir.com" id="set-url"/></div>
+        </div>
+        <button class="btn btn-success" onclick="showAlert('تم حفظ الإعدادات','success')">💾 حفظ</button>
+      </div>
+    </div>
+
+    <!-- Export Section -->
+    <div id="sec-export" class="sec" style="display:none">
+      <h2 style="font-size:18px;margin-bottom:16px">📤 تصدير البيانات</h2>
+      <div class="card">
+        <h3>تصدير posts.json</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">انسخ محتوى الملف وضعه في <code>data/posts.json</code></p>
+        <textarea id="export-posts" style="width:100%;min-height:200px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-family:monospace;font-size:12px" readonly></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-primary" onclick="copyExport('export-posts')">📋 نسخ</button>
+          <button class="btn btn-outline" onclick="downloadExport('posts.json','export-posts')">⬇️ تحميل</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Post Modal -->
+<div class="modal" id="post-modal">
+  <div class="modal__content">
+    <div class="modal__header">
+      <h3 id="modal-title">+ موضوع جديد</h3>
+      <button class="modal__close" onclick="closePostModal()">&times;</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(this,'tab-ar')">🇸🇦 عربي</button>
+      <button class="tab" onclick="switchTab(this,'tab-fr')">🇫🇷 فرنسي</button>
+      <button class="tab" onclick="switchTab(this,'tab-en')">🇬🇧 إنجليزي</button>
+      <button class="tab" onclick="switchTab(this,'tab-es')">🇪🇸 إسباني</button>
+      <button class="tab" onclick="switchTab(this,'tab-settings')">⚙️ إعدادات</button>
+    </div>
+
+    <div class="tab-content active" id="tab-ar">
+      <div class="form-group"><label>العنوان بالعربي</label><input type="text" id="post-title-ar" placeholder="عنوان الموضوع بالعربي"/></div>
+      <div class="form-group"><label>المقتطف بالعربي</label><textarea id="post-excerpt-ar" placeholder="مقتطف قصير..."></textarea></div>
+      <div class="form-group"><label>المحتوى الكامل (HTML)</label><textarea id="post-content-ar" style="min-height:200px" placeholder="<h2>عنوان قسم</h2>&#10;<p>محتوى...</p>"></textarea></div>
+    </div>
+
+    <div class="tab-content" id="tab-fr">
+      <div class="form-group"><label>العنوان بالفرنسي</label><input type="text" id="post-title-fr" placeholder="Titre en français"/></div>
+      <div class="form-group"><label>المقتطف بالفرنسي</label><textarea id="post-excerpt-fr" placeholder="Extrait..."></textarea></div>
+      <div class="form-group"><label>المحتوى الكامل (HTML)</label><textarea id="post-content-fr" style="min-height:200px" placeholder="<h2>Titre</h2>&#10;<p>Contenu...</p>"></textarea></div>
+    </div>
+
+    <div class="tab-content" id="tab-en">
+      <div class="form-group"><label>العنوان بالإنجليزي</label><input type="text" id="post-title-en" placeholder="Title in English"/></div>
+      <div class="form-group"><label>المقتطف بالإنجليزي</label><textarea id="post-excerpt-en" placeholder="Excerpt..."></textarea></div>
+      <div class="form-group"><label>المحتوى الكامل (HTML)</label><textarea id="post-content-en" style="min-height:200px" placeholder="<h2>Title</h2>&#10;<p>Content...</p>"></textarea></div>
+    </div>
+
+    <div class="tab-content" id="tab-es">
+      <div class="form-group"><label>العنوان بالإسباني</label><input type="text" id="post-title-es" placeholder="Título en español"/></div>
+      <div class="form-group"><label>المقتطف بالإسباني</label><textarea id="post-excerpt-es" placeholder="Extracto..."></textarea></div>
+      <div class="form-group"><label>المحتوى الكامل (HTML)</label><textarea id="post-content-es" style="min-height:200px" placeholder="<h2>Título</h2>&#10;<p>Contenido...</p>"></textarea></div>
+    </div>
+
+    <div class="tab-content" id="tab-settings">
+      <div class="form-row">
+        <div class="form-group"><label>Slug (رابط الموضوع)</label><input type="text" id="post-slug" placeholder="my-post-slug"/></div>
+        <div class="form-group"><label>التصنيف (AR)</label><input type="text" id="post-category" placeholder="شواطئ، تاريخ، أخبار..."/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>رابط الصورة</label><input type="text" id="post-image" placeholder="https://..."/></div>
+        <div class="form-group"><label>التاريخ</label><input type="date" id="post-date"/></div>
+      </div>
+      <div style="margin-top:8px">
+        <button class="btn btn-outline btn-sm" onclick="autoTranslate()">🌐 ترجمة تلقائية (عربي ← 3 لغات)</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn btn-success" onclick="savePost()">💾 حفظ الموضوع</button>
+      <button class="btn btn-outline" onclick="previewPost()">👁️ معاينة</button>
+      <button class="btn btn-outline" onclick="generatePostHTML()">🔄 توليد HTML</button>
+      <button class="btn btn-danger btn-sm" onclick="closePostModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   Ksar Sghir Dashboard — Core
+   ============================================ */
+
+var D = D || {};
+
+/* ---------- TRANSLATIONS ---------- */
+D.translations = {
+  "القصر الصغير": {fr:"Ksar Sghir", en:"Ksar Sghir", es:"Ksar Sghir"},
+  "شواطئ": {fr:"Plages", en:"Beaches", es:"Playas"},
+  "قرى": {fr:"Villages", en:"Villages", es:"Pueblos"},
+  "موانئ": {fr:"Ports", en:"Ports", es:"Puertos"},
+  "تاريخ": {fr:"Histoire", en:"History", es:"Historia"},
+  "شاطئ": {fr:"Plage", en:"Beach", es:"Playa"},
+  "قرية": {fr:"Village", en:"Village", es:"Pueblo"},
+  "ميناء": {fr:"Port", en:"Port", es:"Puerto"},
+  "ميناء دولي": {fr:"Port intl.", en:"Intl. Port", es:"Puerto intl."},
+  "أخبار": {fr:"Actualités", en:"News", es:"Noticias"},
+  "سياحة": {fr:"Tourisme", en:"Tourism", es:"Turismo"},
+  "ثقافة": {fr:"Culture", en:"Culture", es:"Cultura"},
+  "طبيعة": {fr:"Nature", en:"Nature", es:"Naturaleza"}
+};
+
+D.autoTranslateText = function(text, fromLang) {
+  if (fromLang !== 'ar') return '';
+  var result = text;
+  Object.keys(D.translations).forEach(function(ar) {
+    var t = D.translations[ar];
+    result = result.replace(new RegExp(ar, 'g'), t.fr);
+  });
+  return result;
+};
+
+/* ---------- DATA ---------- */
+D.posts = [];
+D.editIndex = -1;
+
+D.loadPosts = function() {
+  try {
+    var saved = localStorage.getItem('ks-dash-posts');
+    if (saved) { D.posts = JSON.parse(saved); return; }
+  } catch(e) {}
+  /* Default posts */
+  D.posts = [
+    {slug:"plage-ksarsghir",title:{ar:"شاطئ القصر الصغير — جوهرة شمال المغرب",fr:"Plage de Ksar Sghir — Joyau du Nord Marocain",en:"Ksar Sghir Beach — Gem of Northern Morocco",es:"Playa de Ksar Sghir — Joya del Norte de Marruecos"},excerpt:{ar:"شاطئ رملي ذهبي يمتد على طول مضيق جبل طارق.",fr:"Une plage dorée bordant le détroit de Gibraltar.",en:"A golden sandy beach along the Strait of Gibraltar.",es:"Una playa dorada a lo largo del Estrecho de Gibraltar."},category:{ar:"شواطئ",fr:"Plages",en:"Beaches",es:"Playas"},image:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s400/4353.jpg",date:"2026-08-15"},
+    {slug:"belyounech-village",title:{ar:"بليونش — القرية الساحلية المنسية",fr:"Belyounech — Le Village Côtier Oublié",en:"Belyounech — The Forgotten Coastal Village",es:"Belyounech — El Olvidado Pueblo Costero"},excerpt:{ar:"قرية صيد صغيرة خلف جبل موسى.",fr:"Un petit village de pêcheurs caché derrière le mont Moussa.",en:"A small fishing village hidden behind Mount Moussa.",es:"Un pequeño pueblo de pescadores oculto tras el Monte Moussa."},category:{ar:"قرى",fr:"Villages",en:"Villages",es:"Pueblos"},image:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjY1_FiX8we125rehZU-AihmmW9UCSoEULQ82dOzphF3jMVvi6g4tuO3CZ_fp1ztcOE6Ny-RWghAns_WIsurf3zTeagcpQpw9DIydWkZWzc74TvRddFVWTA9tJouVPJCZYdkR6hs_kIW4onf5W6-pfYp468jGq7jbP_0JctxD7Xrtysi0xrhQ9wOz8s-Js/s400/20180708_110126.jpg",date:"2026-08-10"}
+  ];
+  D.savePosts();
+};
+
+D.savePosts = function() {
+  try { localStorage.setItem('ks-dash-posts', JSON.stringify(D.posts)); } catch(e) {}
+};
+
+/* ---------- NAVIGATION ---------- */
+function showSection(name) {
+  document.querySelectorAll('.sec').forEach(function(s){s.style.display='none';});
+  document.getElementById('sec-'+name).style.display='block';
+  document.querySelectorAll('.sidebar__nav a').forEach(function(a){a.classList.remove('active');});
+  var titles = {dashboard:'📊 لوحة التحكم',posts:'✍️ إدارة المواضيع',tourism:'🗺️ الوجهات السياحية',gallery:'📸 المعرض',settings:'⚙️ الإعدادات',export:'📤 تصدير البيانات'};
+  document.getElementById('section-title').textContent = titles[name] || name;
+  event.target.classList.add('active');
+  if (name === 'posts') renderPostsTable();
+  if (name === 'export') generateExport();
+}
+
+/* ---------- POSTS TABLE ---------- */
+function renderPostsTable() {
+  var tbody = document.getElementById('posts-table');
+  document.getElementById('stat-posts').textContent = D.posts.length;
+  if (!D.posts.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><div class="empty-state__icon">📝</div>لا توجد مواضيع بعد</td></tr>';
+    return;
+  }
+  var html = '';
+  D.posts.forEach(function(p, i) {
+    html += '<tr><td>' + (p.title.ar || '') + '</td><td>' + (p.category.ar || '') + '</td><td>' + (p.date || '') + '</td><td>' +
+      '<button class="btn btn-outline btn-sm" onclick="editPost('+i+')">تعديل</button> ' +
+      '<button class="btn btn-danger btn-sm" onclick="deletePost('+i+')">حذف</button></td></tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+/* ---------- POST MODAL ---------- */
+function openPostModal(index) {
+  D.editIndex = (index !== undefined) ? index : -1;
+  document.getElementById('post-modal').classList.add('show');
+  if (D.editIndex >= 0) {
+    var p = D.posts[D.editIndex];
+    document.getElementById('modal-title').textContent = 'تعديل الموضوع';
+    document.getElementById('post-title-ar').value = p.title.ar || '';
+    document.getElementById('post-title-fr').value = p.title.fr || '';
+    document.getElementById('post-title-en').value = p.title.en || '';
+    document.getElementById('post-title-es').value = p.title.es || '';
+    document.getElementById('post-excerpt-ar').value = p.excerpt.ar || '';
+    document.getElementById('post-excerpt-fr').value = p.excerpt.fr || '';
+    document.getElementById('post-excerpt-en').value = p.excerpt.en || '';
+    document.getElementById('post-excerpt-es').value = p.excerpt.es || '';
+    document.getElementById('post-content-ar').value = (p.content && p.content.ar) || '';
+    document.getElementById('post-content-fr').value = (p.content && p.content.fr) || '';
+    document.getElementById('post-content-en').value = (p.content && p.content.en) || '';
+    document.getElementById('post-content-es').value = (p.content && p.content.es) || '';
+    document.getElementById('post-slug').value = p.slug || '';
+    document.getElementById('post-category').value = (p.category && p.category.ar) || '';
+    document.getElementById('post-image').value = p.image || '';
+    document.getElementById('post-date').value = p.date || '';
+  } else {
+    document.getElementById('modal-title').textContent = '+ موضوع جديد';
+    document.querySelectorAll('#post-modal input, #post-modal textarea').forEach(function(el){el.value='';});
+    document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+  }
+}
+
+function closePostModal() {
+  document.getElementById('post-modal').classList.remove('show');
+}
+
+function editPost(i) { openPostModal(i); }
+
+function deletePost(i) {
+  if (confirm('هل أنت متأكد من حذف هذا الموضوع؟')) {
+    D.posts.splice(i, 1);
+    D.savePosts();
+    renderPostsTable();
+    showAlert('تم حذف الموضوع', 'danger');
+  }
+}
+
+function savePost() {
+  var slug = document.getElementById('post-slug').value.trim();
+  var titleAr = document.getElementById('post-title-ar').value.trim();
+  if (!slug || !titleAr) {
+    showAlert('الرجاء ملء العنوان والـ slug', 'danger');
+    return;
+  }
+  var post = {
+    slug: slug,
+    title: {
+      ar: titleAr,
+      fr: document.getElementById('post-title-fr').value.trim(),
+      en: document.getElementById('post-title-en').value.trim(),
+      es: document.getElementById('post-title-es').value.trim()
+    },
+    excerpt: {
+      ar: document.getElementById('post-excerpt-ar').value.trim(),
+      fr: document.getElementById('post-excerpt-fr').value.trim(),
+      en: document.getElementById('post-excerpt-en').value.trim(),
+      es: document.getElementById('post-excerpt-es').value.trim()
+    },
+    content: {
+      ar: document.getElementById('post-content-ar').value,
+      fr: document.getElementById('post-content-fr').value,
+      en: document.getElementById('post-content-en').value,
+      es: document.getElementById('post-content-es').value
+    },
+    category: {
+      ar: document.getElementById('post-category').value.trim(),
+      fr: '', en: '', es: ''
+    },
+    image: document.getElementById('post-image').value.trim(),
+    date: document.getElementById('post-date').value
+  };
+
+  /* Auto-translate category */
+  var catAr = post.category.ar;
+  if (D.translations[catAr]) {
+    post.category.fr = D.translations[catAr].fr;
+    post.category.en = D.translations[catAr].en;
+    post.category.es = D.translations[catAr].es;
+  }
+
+  if (D.editIndex >= 0) {
+    D.posts[D.editIndex] = post;
+  } else {
+    D.posts.unshift(post);
+  }
+  D.savePosts();
+  closePostModal();
+  renderPostsTable();
+  showAlert('تم حفظ الموضوع بنجاح', 'success');
+}
+
+function autoTranslate() {
+  var ar = document.getElementById('post-title-ar').value;
+  if (!ar) { showAlert('اكتب العنوان بالعربي أولاً', 'danger'); return; }
+
+  /* Simple dictionary translation for common words */
+  var dict = {
+    'شاطئ': {fr:'Plage', en:'Beach', es:'Playa'},
+    'القصر الصغير': {fr:'Ksar Sghir', en:'Ksar Sghir', es:'Ksar Sghir'},
+    'ميناء': {fr:'Port', en:'Port', es:'Puerto'},
+    'تاريخي': {fr:'Historique', en:'Historic', es:'Histórico'},
+    'قرية': {fr:'Village', en:'Village', es:'Pueblo'},
+    'بليونش': {fr:'Belyounech', en:'Belyounech', es:'Belyounech'},
+    'طنجة': {fr:'Tanger', en:'Tangier', es:'Tánger'},
+    'المتوسط': {fr:'Med', en:'Med', es:'Med'},
+    'شمال المغرب': {fr:'Nord du Maroc', en:'Northern Morocco', es:'Norte de Marruecos'},
+    'مضيق جبل طارق': {fr:'Détroit de Gibraltar', en:'Strait of Gibraltar', es:'Estrecho de Gibraltar'},
+    'جبل موسى': {fr:'Mont Moussa', en:'Mount Moussa', es:'Monte Moussa'},
+    'جوهرة': {fr:'Joyau', en:'Gem', es:'Joya'},
+    'الساحلية': {fr:'Côtier', en:'Coastal', es:'Costero'},
+    'المنسية': {fr:'Oublié', en:'Forgotten', es:'Olvidado'},
+    'الصيد': {fr:'Pêche', en:'Fishing', es:'Pesca'},
+    'التقليدي': {fr:'Traditionnel', en:'Traditional', es:'Tradicional'}
+  };
+
+  var titleFr = ar, titleEn = ar, titleEs = ar;
+  Object.keys(dict).forEach(function(k) {
+    if (ar.includes(k)) {
+      titleFr = titleFr.replace(k, dict[k].fr);
+      titleEn = titleEn.replace(k, dict[k].en);
+      titleEs = titleEs.replace(k, dict[k].es);
+    }
+  });
+
+  document.getElementById('post-title-fr').value = titleFr;
+  document.getElementById('post-title-en').value = titleEn;
+  document.getElementById('post-title-es').value = titleEs;
+
+  showAlert('تمت الترجمة التلقائية (يفضل التدقيق اليدوي)', 'success');
+}
+
+/* ---------- TABS ---------- */
+function switchTab(btn, id) {
+  btn.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  var modal = btn.closest('.modal__content');
+  modal.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+}
+
+/* ---------- EXPORT ---------- */
+function generateExport() {
+  document.getElementById('export-posts').value = JSON.stringify(D.posts, null, 2);
+}
+
+function copyExport(id) {
+  var el = document.getElementById(id);
+  el.select();
+  document.execCommand('copy');
+  showAlert('تم النسخ', 'success');
+}
+
+function downloadExport(filename, id) {
+  var text = document.getElementById(id).value;
+  var blob = new Blob([text], {type: 'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  showAlert('تم التحميل', 'success');
+}
+
+/* ---------- GENERATE HTML ---------- */
+function generatePostHTML() {
+  var slug = document.getElementById('post-slug').value.trim();
+  var titleAr = document.getElementById('post-title-ar').value.trim();
+  if (!slug || !titleAr) { showAlert('الرجاء ملء العنوان والـ slug', 'danger'); return; }
+
+  var titleFr = document.getElementById('post-title-fr').value.trim() || titleAr;
+  var titleEn = document.getElementById('post-title-en').value.trim() || titleAr;
+  var titleEs = document.getElementById('post-title-es').value.trim() || titleAr;
+  var excerptAr = document.getElementById('post-excerpt-ar').value.trim();
+  var excerptFr = document.getElementById('post-excerpt-fr').value.trim() || excerptAr;
+  var excerptEn = document.getElementById('post-excerpt-en').value.trim() || excerptAr;
+  var excerptEs = document.getElementById('post-excerpt-es').value.trim() || excerptAr;
+  var image = document.getElementById('post-image').value.trim();
+  var contentAr = document.getElementById('post-content-ar').value;
+  var contentFr = document.getElementById('post-content-fr').value || contentAr;
+  var contentEn = document.getElementById('post-content-en').value || contentAr;
+  var contentEs = document.getElementById('post-content-es').value || contentAr;
+  var date = document.getElementById('post-date').value;
+
+  var html = '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8"/>\n  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\n  <title>' + titleAr + ' | Ksar Sghir</title>\n  <meta name="description" content="' + excerptAr + '"/>\n  <link rel="canonical" href="https://www.ksarsghir.com/blog/' + slug + '.html"/>\n  <meta property="og:title" content="' + titleAr + '"/>\n  <meta property="og:description" content="' + excerptAr + '"/>\n  <meta property="og:image" content="' + image + '"/>\n  <link rel="preconnect" href="https://fonts.googleapis.com"/>\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>\n  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>\n  <link rel="stylesheet" href="../assets/css/style.css"/>\n</head>\n<body>\n  <header class="header">\n    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>\n    <div class="header__actions">\n      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>\n      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>\n    </div>\n  </header>\n  <nav class="nav">\n    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>\n    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>\n    <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>\n    <a href="/" class="nav__link active" data-i18n="nav-blog">✍️ المدونة</a>\n    <a href="../weather/" class="nav__link" data-i18n="nav-weather">🌤️ الطقس</a>\n    <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>\n  </nav>\n  <div class="container"><nav class="breadcrumb"><a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><a href="/">المدونة</a><span class="breadcrumb__separator">/</span><span>' + titleAr + '</span></nav></div>\n  <section class="hero" style="height:350px"><div class="hero__slide active" style="background-image:url(\'' + image + '\')"><div class="hero__overlay"></div></div><div class="hero__content"><h1 class="hero__title">' + titleAr + '</h1></div></section>\n  <main class="section" role="main"><div class="container" style="max-width:800px">\n    <article>\n      <time class="post-card__date" datetime="' + date + '">' + date + '</time>\n      <div id="post-body-ar" style="color:var(--text2);line-height:1.8;margin-top:16px">' + contentAr + '</div>\n      <div id="post-body-fr" style="display:none;color:var(--text2);line-height:1.8;margin-top:16px">' + contentFr + '</div>\n      <div id="post-body-en" style="display:none;color:var(--text2);line-height:1.8;margin-top:16px">' + contentEn + '</div>\n      <div id="post-body-es" style="display:none;color:var(--text2);line-height:1.8;margin-top:16px">' + contentEs + '</div>\n    </article>\n  </div></main>\n  <footer class="footer"><div class="container"><div class="footer__bottom"><div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div></div></div></footer>\n  <script src="../assets/js/i18n.js"><\/script>\n  <script src="../assets/js/main.js"><\/script>\n  <script>\n  /* Language switcher for post content */\n  document.querySelectorAll(".lang-btn").forEach(function(btn){\n    btn.addEventListener("click",function(){\n      var lang=this.getAttribute("data-lang");\n      ["ar","fr","en","es"].forEach(function(l){\n        var el=document.getElementById("post-body-"+l);\n        if(el) el.style.display=(l===lang)?"block":"none";\n      });\n    });\n  });\n  <\/script>\n</body>\n</html>';
+
+  /* Create and download */
+  var blob = new Blob([html], {type: 'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = slug + '.html';
+  a.click();
+  showAlert('تم توليد الصفحة: ' + slug + '.html — ضعها في مجلد blog/', 'success');
+}
+
+/* ---------- PREVIEW ---------- */
+function previewPost() {
+  var titleAr = document.getElementById('post-title-ar').value;
+  var contentAr = document.getElementById('post-content-ar').value;
+  var image = document.getElementById('post-image').value;
+  var w = window.open('', '_blank');
+  w.document.write('<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"/><title>' + titleAr + '</title><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/><link rel="stylesheet" href="../assets/css/style.css"/></head><body><header class="header"><a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar">القصر الصغير</span></span></a></header><section class="hero" style="height:350px"><div class="hero__slide active" style="background-image:url(\'' + image + '\')"><div class="hero__overlay"></div></div><div class="hero__content"><h1 class="hero__title">' + titleAr + '</h1></div></section><main class="section"><div class="container" style="max-width:800px"><article><div style="color:var(--text2);line-height:1.8">' + contentAr + '</div></article></div></main></body></html>');
+}
+
+/* ---------- ALERTS ---------- */
+function showAlert(msg, type) {
+  var el = document.getElementById('alert-area');
+  el.innerHTML = '<div class="alert alert-' + type + '">' + msg + '</div>';
+  setTimeout(function(){el.innerHTML='';}, 3000);
+}
+
+/* ---------- THEME ---------- */
+function toggleDashTheme() {
+  document.body.classList.toggle('light');
+}
+
+/* ---------- INIT ---------- */
+D.loadPosts();
+renderPostsTable();
+</script>
+</body>
+</html>

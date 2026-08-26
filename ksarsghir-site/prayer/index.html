@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>مواقيت الصلاة — القصر الصغير | Ksar Sghir Prayer Times</title>
+  <meta name="description" content="أوقات الصلاة اليومية في القصر الصغير — الفجر، الظهر، العصر، المغرب، العشاء. عداد تنازلي حي + اتجاه القبلة."/>
+  <link rel="canonical" href="https://www.ksarsghir.com/prayer/"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"مواقيت الصلاة — القصر الصغير","url":"https://www.ksarsghir.com/prayer/"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .prayer-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--sp-xl); text-align:center; }
+    .prayer-card__next { background:rgba(var(--gold-rgb),0.1); border:2px solid var(--gold); border-radius:var(--radius-lg); padding:var(--sp-xl); text-align:center; margin-bottom:var(--sp-xl); }
+    .prayer-card__next-label { font-size:var(--fs-sm); color:var(--text2); }
+    .prayer-card__next-name { font-size:var(--fs-2xl); font-weight:900; color:var(--gold); margin:var(--sp-sm) 0; }
+    .prayer-card__next-time { font-size:48px; font-weight:900; color:var(--text); font-variant-numeric:tabular-nums; }
+    .prayer-card__next-countdown { font-size:var(--fs-xl); color:var(--accent); font-weight:700; margin-top:var(--sp-sm); }
+    .prayer-times-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-md); }
+    .prayer-time-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--sp-lg); }
+    .prayer-time-card.is-next { border-color:var(--gold); background:rgba(var(--gold-rgb),0.05); }
+    .prayer-time-card__name { font-size:var(--fs-md); font-weight:700; color:var(--text); margin-bottom:var(--sp-xs); }
+    .prayer-time-card__time { font-size:var(--fs-xl); font-weight:900; color:var(--gold); }
+    @media(max-width:768px){ .prayer-times-grid{grid-template-columns:repeat(3,1fr);} }
+    @media(max-width:480px){ .prayer-times-grid{grid-template-columns:repeat(2,1fr);} }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+    <div class="header__actions">
+      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
+    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
+    <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>
+    <a href="../blog/" class="nav__link" data-i18n="nav-blog">✍️ المدونة</a>
+    <a href="../store/" class="nav__link" data-i18n="nav-store">🛒 المتجر</a>
+    <a href="../weather/" class="nav__link" data-i18n="nav-weather">🌤️ الطقس</a>
+    <a href="/" class="nav__link active" data-i18n="nav-prayer">🕌 الصلاة</a>
+  </nav>
+
+  <div class="container"><nav class="breadcrumb"><a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><span>مواقيت الصلاة</span></nav></div>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">🕌 <span>مواقيت الصلاة</span></h1>
+      <p class="page-hero__desc">أوقات الأذان اليومية في القصر الصغير — بيانات من Aladhan API</p>
+    </div>
+  </section>
+
+  <main class="section" role="main">
+    <div class="container">
+
+      <!-- Next Prayer -->
+      <div class="prayer-card__next" id="prayer-next-card">
+        <div class="prayer-card__next-label">الصلاة القادمة</div>
+        <div class="prayer-card__next-name" id="prayer-next-name">--</div>
+        <div class="prayer-card__next-time" id="prayer-next-time">--:--</div>
+        <div class="prayer-card__next-countdown">المتبقي: <span id="prayer-countdown-big">--:--:--</span></div>
+      </div>
+
+      <!-- All Times -->
+      <div class="prayer-times-grid" id="prayer-times-all">
+        <div class="prayer-time-card"><div class="prayer-time-card__name">الفجر</div><div class="prayer-time-card__time" id="pt-fajr">--:--</div></div>
+        <div class="prayer-time-card"><div class="prayer-time-card__name">الظهر</div><div class="prayer-time-card__time" id="pt-dhuhr">--:--</div></div>
+        <div class="prayer-time-card"><div class="prayer-time-card__name">العصر</div><div class="prayer-time-card__time" id="pt-asr">--:--</div></div>
+        <div class="prayer-time-card"><div class="prayer-time-card__name">المغرب</div><div class="prayer-time-card__time" id="pt-maghrib">--:--</div></div>
+        <div class="prayer-time-card"><div class="prayer-time-card__name">العشاء</div><div class="prayer-time-card__time" id="pt-isha">--:--</div></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer__bottom"><div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div><div class="footer__legal"><a href="../privacy.html">الخصوصية</a><a href="../about.html">من نحن</a><a href="https://wa.me/212708053745" target="_blank" rel="noopener">اتصل بنا</a></div></div></div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var now = new Date();
+    var dateStr = now.getDate()+"-"+(now.getMonth()+1)+"-"+now.getFullYear();
+    var url = "https://api.aladhan.com/v1/timings/"+dateStr+"?latitude=35.6897&longitude=-5.5597&method=21";
+
+    fetch(url).then(function(r){return r.json();}).then(function(d){
+      var t = d.data.timings;
+      var prayers = [
+        {key:"Fajr",id:"pt-fajr",name:"الفجر"},
+        {key:"Dhuhr",id:"pt-dhuhr",name:"الظهر"},
+        {key:"Asr",id:"pt-asr",name:"العصر"},
+        {key:"Maghrib",id:"pt-maghrib",name:"المغرب"},
+        {key:"Isha",id:"pt-isha",name:"العشاء"}
+      ];
+
+      var nowMins = now.getHours()*60+now.getMinutes();
+      var nextKey="Isha", nextMins=9999;
+      prayers.forEach(function(p){
+        document.getElementById(p.id).textContent = t[p.key];
+        var pm=parseInt(t[p.key].split(":")[0])*60+parseInt(t[p.key].split(":")[1]);
+        if(pm>nowMins&&pm<nextMins){nextMins=pm;nextKey=p.key;}
+      });
+
+      var next = prayers.find(function(p){return p.key===nextKey;});
+      document.getElementById("prayer-next-name").textContent = next.name;
+      document.getElementById("prayer-next-time").textContent = t[nextKey];
+
+      // Countdown
+      setInterval(function(){
+        var now2=new Date(), tgt=new Date();
+        var p=t[nextKey].split(":");
+        tgt.setHours(parseInt(p[0]),parseInt(p[1]),0,0);
+        if(tgt<now2) tgt.setDate(tgt.getDate()+1);
+        var diff=Math.max(0,tgt-now2);
+        var h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+        document.getElementById("prayer-countdown-big").textContent=KS.pad(h)+":"+KS.pad(m)+":"+KS.pad(s);
+      },1000);
+    });
+  });
+  </script>
+</body>
+</html>

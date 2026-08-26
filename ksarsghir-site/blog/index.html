@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>المدونة — أخبار وقصص من القصر الصغير | Ksar Sghir Blog</title>
+  <meta name="description" content="أخبار وقصص من القصر الصغير — مقالات عن السياحة والتاريخ والثقافة في شمال المغرب."/>
+  <link rel="canonical" href="https://www.ksarsghir.com/blog/"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Blog","name":"مدونة القصر الصغير","url":"https://www.ksarsghir.com/blog/","about":{"@type":"TouristDestination","name":"Ksar Sghir"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+    <div class="header__actions">
+      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
+    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
+    <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>
+    <a href="/" class="nav__link active" data-i18n="nav-blog">✍️ المدونة</a>
+    <a href="../store/" class="nav__link" data-i18n="nav-store">🛒 المتجر</a>
+    <a href="../weather/" class="nav__link" data-i18n="nav-weather">🌤️ الطقس</a>
+    <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>
+  </nav>
+
+  <div class="container"><nav class="breadcrumb"><a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><span>المدونة</span></nav></div>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title" data-i18n="blog-title">✍️ <span>أحدث المقالات</span></h1>
+      <p class="page-hero__desc" data-i18n="blog-desc">أخبار وقصص من القصر الصغير</p>
+    </div>
+  </section>
+
+  <main class="section" role="main">
+    <div class="container">
+      <div class="grid grid-3" id="blog-all-posts">
+        <!-- Auto-loaded from data/posts.json -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer__bottom"><div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div><div class="footer__legal"><a href="../privacy.html">الخصوصية</a><a href="../about.html">من نحن</a><a href="https://wa.me/212708053745" target="_blank" rel="noopener">اتصل بنا</a></div></div></div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    fetch("../data/posts.json")
+      .then(function(r) { return r.json(); })
+      .then(function(posts) {
+        var grid = document.getElementById("blog-all-posts");
+        if (!grid || !posts.length) return;
+        var lang = KS.getLang();
+        var html = "";
+        posts.forEach(function(post) {
+          var title = post.title[lang] || post.title.ar;
+          var excerpt = post.excerpt[lang] || post.excerpt.ar;
+          var cat = post.category[lang] || post.category.ar;
+          var date = post.date;
+          var img = post.image;
+          var slug = post.slug;
+          html += '<article class="post-card"><div class="post-card__thumb" style="background-image:url(\'' + img + '\')"><span class="post-card__category">' + cat + '</span></div><div class="post-card__body"><time class="post-card__date" datetime="' + date + '">' + date + '</time><h2 class="post-card__title"><a href="' + slug + '.html">' + title + '</a></h2><p class="post-card__excerpt">' + excerpt + '</p><a href="' + slug + '.html" class="post-card__read-more" data-i18n="blog-read-more">اقرأ المزيد ←</a></div></article>';
+        });
+        grid.innerHTML = html;
+      })
+      .catch(function() {});
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>معرض الصور — القصر الصغير | Ksar Sghir Photo Gallery</title>
+  <meta name="description" content="معرض صور احترافي للقصر الصغير — شواطئ، موانئ، غروب، تاريخ. بعدسة بلال الهيشو — Ksar Sghir Lens."/>
+  <link rel="canonical" href="https://www.ksarsghir.com/gallery/"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"ImageGallery","name":"معرض الصور — القصر الصغير","url":"https://www.ksarsghir.com/gallery/","about":{"@type":"TouristDestination","name":"Ksar Sghir"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-sm); }
+    .gallery-item { border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3; position:relative; cursor:pointer; }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s var(--ease); }
+    .gallery-item:hover img { transform:scale(1.08); }
+    .gallery-item__overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(0,0,0,0.6),transparent); opacity:0; transition:opacity 0.3s; display:flex; align-items:flex-end; padding:var(--sp-md); }
+    .gallery-item:hover .gallery-item__overlay { opacity:1; }
+    .gallery-item__title { color:white; font-size:var(--fs-sm); font-weight:700; }
+    @media(max-width:768px){ .gallery-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:480px){ .gallery-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+    <div class="header__actions">
+      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
+    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
+    <a href="/" class="nav__link active" data-i18n="nav-gallery">📸 المعرض</a>
+    <a href="../blog/" class="nav__link" data-i18n="nav-blog">✍️ المدونة</a>
+    <a href="../store/" class="nav__link" data-i18n="nav-store">🛒 المتجر</a>
+    <a href="../weather/" class="nav__link" data-i18n="nav-weather">🌤️ الطقس</a>
+    <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>
+  </nav>
+
+  <div class="container"><nav class="breadcrumb"><a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><span>المعرض</span></nav></div>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title" data-i18n="gallery-title">📸 <span>معرض الصور</span></h1>
+      <p class="page-hero__desc" data-i18n="gallery-desc">لقطات احترافية من عدسة بلال الهيشو — Ksar Sghir Lens</p>
+    </div>
+  </section>
+
+  <main class="section" role="main">
+    <div class="container">
+      <div class="gallery-grid">
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s400/8510.jpg" alt="القصر الصغير — منظر عام" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">القصر الصغير — منظر عام</span></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s400/3385.jpg" alt="شاطئ القصر الصغير" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">شاطئ القصر الصغير</span></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhltrGBdL8KJXcAydcjaVU2YSc05kptiQG4qIcbNkaRI00RlrqbgAYaEB9FetBOZ-cQHXYyHhX5JE9ENcE-osmDmS1naEOGiucbFMgG5B1yyk4M4ppuOZ-G6aQx0q2F8sqa-dMo_3AnSIPD_Y53dMbDIEeC4Y1b_pkdln-WbrhRSp_1L6n9DbXiKU3e3oQ/s400/3558.jpg" alt="ميناء الصيد" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">ميناء الصيد التقليدي</span></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxITHAep8KbGjw4cuFo-wlpSfD4RNEbZz5CrrWg0LT9NfjMXHPbSd6yrv9TYGoDND4tJv4-IY3FsFbJiGrQD3CKLDAEKmugNEFqGCKziGqLV1o9mbqH_TBWS389TDr2ny2UsVZKmHQu8_c2uS2zHCFpE3pBN1a-CjUDj7aOIcIE1noPDBtrUR0IhFfLkQ/s400/7416.jpg" alt="القصر الصغير التاريخي" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">القصر الصغير التاريخي</span></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s400/4353.jpg" alt="شاطئ القصر الصغير — غروب" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">غروب الشمس — شاطئ القصر الصغير</span></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiXXQXtwBJPfwZqzjobFgx4I5-6fd1zDojDyQBKEFAsgW6vA4E93gL4t8IMUmKZtKlio7Ww90got7a9y1PrihN-SWUdT86EE_x0MKfE99s2O6VLMrM7ADgSrfzKZ1pAFMSwIxewmWwc6uWOBr31_a3_Hpd0CB3bGAhAJViLVMmSV_T7u1CJLQXxPwi7nLE/s400/8185.jpg" alt="بليونش" loading="lazy" width="400" height="300"/>
+          <figcaption class="gallery-item__overlay"><span class="gallery-item__title">قرية بليونش</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer__bottom"><div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div><div class="footer__legal"><a href="../privacy.html">الخصوصية</a><a href="../about.html">من نحن</a><a href="https://wa.me/212708053745" target="_blank" rel="noopener">اتصل بنا</a></div></div></div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الطقس والبحر — القصر الصغير | Ksar Sghir Weather</title>
+  <meta name="description" content="نشرة طقس 7 أيام للقصر الصغير — حالة البحر، الرياح، الحرارة، الرطوبة. بيانات حية من OpenWeatherMap."/>
+  <link rel="canonical" href="https://www.ksarsghir.com/weather/"/>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"الطقس والبحر — القصر الصغير","url":"https://www.ksarsghir.com/weather/"}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <style>
+    .weather-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:var(--sp-xl); text-align:center; }
+    .weather-card__icon { font-size:64px; margin-bottom:var(--sp-md); }
+    .weather-card__temp { font-size:48px; font-weight:900; color:var(--accent); }
+    .weather-card__desc { font-size:var(--fs-md); color:var(--text2); margin-top:var(--sp-sm); }
+    .forecast-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:var(--sp-sm); margin-top:var(--sp-xl); }
+    .forecast-day { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-md); padding:var(--sp-md); text-align:center; }
+    .forecast-day__name { font-size:var(--fs-xs); color:var(--text3); margin-bottom:var(--sp-xs); }
+    .forecast-day__icon { font-size:28px; }
+    .forecast-day__temp { font-size:var(--fs-md); font-weight:700; color:var(--text); margin-top:var(--sp-xs); }
+    @media(max-width:768px){ .forecast-grid{grid-template-columns:repeat(4,1fr);} }
+    @media(max-width:480px){ .forecast-grid{grid-template-columns:repeat(2,1fr);} }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+    <div class="header__actions">
+      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
+    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
+    <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>
+    <a href="../blog/" class="nav__link" data-i18n="nav-blog">✍️ المدونة</a>
+    <a href="../store/" class="nav__link" data-i18n="nav-store">🛒 المتجر</a>
+    <a href="/" class="nav__link active" data-i18n="nav-weather">🌤️ الطقس</a>
+    <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>
+  </nav>
+
+  <div class="container"><nav class="breadcrumb"><a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><span>الطقس والبحر</span></nav></div>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">🌤️ <span>الطقس والبحر</span></h1>
+      <p class="page-hero__desc">نشرة جوية حية للقصر الصغير — بيانات من OpenWeatherMap</p>
+    </div>
+  </section>
+
+  <main class="section" role="main">
+    <div class="container">
+
+      <!-- Current Weather -->
+      <div class="weather-card" id="weather-current">
+        <div class="weather-card__icon">⏳</div>
+        <div class="weather-card__temp">--°C</div>
+        <div class="weather-card__desc">جاري تحميل بيانات الطقس...</div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="grid grid-4" style="margin-top:var(--sp-xl)" id="weather-details">
+        <div class="forecast-day"><div class="forecast-day__name">الحرارة</div><div class="forecast-day__icon">🌡️</div><div class="forecast-day__temp" id="wd-temp">--°C</div></div>
+        <div class="forecast-day"><div class="forecast-day__name">الرياح</div><div class="forecast-day__icon">💨</div><div class="forecast-day__temp" id="wd-wind">-- km/h</div></div>
+        <div class="forecast-day"><div class="forecast-day__name">الرطوبة</div><div class="forecast-day__icon">💧</div><div class="forecast-day__temp" id="wd-humidity">--%</div></div>
+        <div class="forecast-day"><div class="forecast-day__name">حالة البحر</div><div class="forecast-day__icon">🌊</div><div class="forecast-day__temp" id="wd-sea">--</div></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="footer__bottom"><div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div><div class="footer__legal"><a href="../privacy.html">الخصوصية</a><a href="../about.html">من نحن</a><a href="https://wa.me/212708053745" target="_blank" rel="noopener">اتصل بنا</a></div></div></div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var url = "https://api.openweathermap.org/data/2.5/weather?lat=35.6897&lon=-5.5597&appid=bd5e378503939ddaee76f12ad7a97608&units=metric";
+    fetch(url).then(function(r){return r.json();}).then(function(d){
+      var temp = Math.round(d.main.temp);
+      var wind = Math.round(d.wind.speed * 3.6);
+      var hum = d.main.humidity;
+      var desc = d.weather[0].description;
+      var icon = d.weather[0].icon;
+      var ws = d.wind.speed;
+      var sea = ws < 5 ? "هادئ ✅" : (ws < 10 ? "متوسط ⚠️" : "متلاطم ❌");
+
+      document.querySelector(".weather-card__icon").textContent = KS.slider ? "🌡️" : "🌡️";
+      document.querySelector(".weather-card__temp").textContent = temp + "°C";
+      document.querySelector(".weather-card__desc").textContent = desc;
+      document.getElementById("wd-temp").textContent = temp + "°C";
+      document.getElementById("wd-wind").textContent = wind + " km/h";
+      document.getElementById("wd-humidity").textContent = hum + "%";
+      document.getElementById("wd-sea").textContent = sea;
+    });
+  });
+  </script>
+</body>
+</html>

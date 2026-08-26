@@ -251,9 +251,9 @@ KS.loadBlogPosts = function() {
           '<span class="post-card__category">' + cat + '</span></div>' +
           '<div class="post-card__body">' +
           '<time class="post-card__date" datetime="' + date + '">' + date + '</time>' +
-          '<h3 class="post-card__title"><a href="blog/' + slug + '.html">' + title + '</a></h3>' +
+          '<h3 class="post-card__title"><a href="blog/post.html?slug=' + slug + '">' + title + '</a></h3>' +
           '<p class="post-card__excerpt">' + excerpt + '</p>' +
-          '<a href="blog/' + slug + '.html" class="post-card__read-more" data-i18n="blog-read-more">اقرأ المزيد ←</a>' +
+          '<a href="blog/post.html?slug=' + slug + '" class="post-card__read-more" data-i18n="blog-read-more">اقرأ المزيد ←</a>' +
           '</div></article>';
       });
       grid.innerHTML = html;

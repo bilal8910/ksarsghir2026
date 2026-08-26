@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">مقال — Ksar Sghir</title>
+  <meta name="description" id="page-desc" content=""/>
+  <meta property="og:title" id="og-title" content=""/>
+  <meta property="og:description" id="og-desc" content=""/>
+  <meta property="og:image" id="og-image" content=""/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../" class="header__logo"><span class="header__logo-icon">🏖️</span><span class="header__logo-text"><span class="header__logo-ar" data-i18n="site-name">القصر الصغير</span><span class="header__logo-en">KSAR SGHIR</span></span></a>
+    <div class="header__actions">
+      <div class="lang-switch"><button class="lang-btn active" data-lang="ar">AR</button><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div>
+      <button class="theme-toggle" onclick="KS.toggleTheme()">☀️</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="../" class="nav__link" data-i18n="nav-home">🏠 الرئيسية</a>
+    <a href="../tourism/" class="nav__link" data-i18n="nav-tourism">🗺️ السياحة</a>
+    <a href="../gallery/" class="nav__link" data-i18n="nav-gallery">📸 المعرض</a>
+    <a href="/" class="nav__link active" data-i18n="nav-blog">✍️ المدونة</a>
+    <a href="../store/" class="nav__link" data-i18n="nav-store">🛒 المتجر</a>
+    <a href="../weather/" class="nav__link" data-i18n="nav-weather">🌤️ الطقس</a>
+    <a href="../prayer/" class="nav__link" data-i18n="nav-prayer">🕌 الصلاة</a>
+  </nav>
+
+  <div class="container">
+    <nav class="breadcrumb" id="breadcrumb">
+      <a href="../">الرئيسية</a><span class="breadcrumb__separator">/</span><a href="/">المدونة</a><span class="breadcrumb__separator">/</span><span id="bc-title">...</span>
+    </nav>
+  </div>
+
+  <!-- Loading State -->
+  <div id="post-loading" class="section">
+    <div class="container" style="max-width:800px;text-align:center;padding:60px 0">
+      <div style="font-size:48px;margin-bottom:16px">⏳</div>
+      <p style="color:var(--text2)">جاري تحميل الموضوع...</p>
+    </div>
+  </div>
+
+  <!-- Post Content (hidden until loaded) -->
+  <div id="post-content" style="display:none">
+    <section class="hero" style="height:380px">
+      <div class="hero__slide active" id="post-hero-img" style="background-size:cover;background-position:center">
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="hero__content">
+        <span class="hero__badge" id="post-category-badge">...</span>
+        <h1 class="hero__title" id="post-title">...</h1>
+        <p class="hero__desc" id="post-excerpt">...</p>
+      </div>
+    </section>
+
+    <main class="section" role="main">
+      <div class="container" style="max-width:800px">
+        <article>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;color:var(--text3);font-size:13px">
+            <time id="post-date" datetime="">...</time>
+            <span>•</span>
+            <span id="post-cat-text">...</span>
+          </div>
+
+          <!-- Post Body: switches by language -->
+          <div id="body-ar" class="post-body" style="color:var(--text2);line-height:1.9;font-size:16px"></div>
+          <div id="body-fr" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
+          <div id="body-en" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
+          <div id="body-es" class="post-body" style="display:none;color:var(--text2);line-height:1.9;font-size:16px"></div>
+
+          <!-- Share -->
+          <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
+            <span style="color:var(--text3);font-size:13px;line-height:36px">شارك:</span>
+            <a id="share-whatsapp" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:var(--success);border-color:var(--success)">💬 WhatsApp</a>
+            <a id="share-facebook" href="#" target="_blank" rel="noopener" class="btn btn--sm btn--outline" style="color:#1877f2;border-color:#1877f2">📘 Facebook</a>
+            <button class="btn btn--sm btn--outline" onclick="copyPostLink()">📋 نسخ الرابط</button>
+          </div>
+        </article>
+
+        <!-- Related Posts -->
+        <div style="margin-top:48px">
+          <h3 style="font-size:18px;font-weight:900;margin-bottom:16px;color:var(--text)">📝 مواضيع ذات صلة</h3>
+          <div class="grid grid-3" id="related-posts"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 404 State -->
+  <div id="post-404" style="display:none" class="section">
+    <div class="container" style="max-width:800px;text-align:center;padding:60px 0">
+      <div style="font-size:64px;margin-bottom:16px">🔍</div>
+      <h2 style="font-size:24px;margin-bottom:8px">الموضوع غير موجود</h2>
+      <p style="color:var(--text2);margin-bottom:24px">عذراً، لم نتمكن من العثور على هذا الموضوع.</p>
+      <a href="/" class="btn btn--primary">← العودة للمدونة</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <div class="footer__copy" data-i18n="footer-copy">© 2026 <span>Ksar Sghir</span> — Bilal El Hichou</div>
+        <div class="footer__legal">
+          <a href="../privacy.html" data-i18n="footer-privacy">الخصوصية</a>
+          <a href="../about.html" data-i18n="footer-about">من نحن</a>
+          <a href="https://wa.me/212708053745" target="_blank" rel="noopener" data-i18n="footer-contact">اتصل بنا</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+  (function() {
+    /* Get slug from URL: post.html?slug=plage-ksarsghir OR post/plage-ksarsghir.html */
+    var slug = null;
+    var params = new URLSearchParams(window.location.search);
+    slug = params.get("slug");
+    if (!slug) {
+      var path = window.location.pathname;
+      var match = path.match(/\/([^\/]+)\.html$/);
+      if (match) slug = match[1];
+    }
+    /* Also handle clean URLs like /blog/plage-ksarsghir */
+    if (!slug) {
+      var path2 = window.location.pathname;
+      var parts = path2.split("/").filter(Boolean);
+      if (parts.length > 0 && !parts[parts.length-1].includes(".")) {
+        slug = parts[parts.length-1];
+      }
+    }
+
+    if (!slug) { show404(); return; }
+
+    fetch("../data/posts.json")
+      .then(function(r) { return r.json(); })
+      .then(function(posts) {
+        var post = posts.find(function(p) { return p.slug === slug; });
+        if (!post) { show404(); return; }
+        renderPost(post, posts);
+      })
+      .catch(function() { show404(); });
+  })();
+
+  function renderPost(post, allPosts) {
+    var lang = KS.getLang();
+    var siteUrl = "https://www.ksarsghir.com";
+
+    /* Title & Meta */
+    var title = post.title[lang] || post.title.ar;
+    var excerpt = post.excerpt[lang] || post.excerpt.ar;
+    var cat = post.category[lang] || post.category.ar;
+    var catAr = post.category.ar;
+    var date = post.date;
+    var img = post.image;
+
+    document.title = title + " | Ksar Sghir Blog";
+    document.getElementById("page-title").textContent = title;
+    document.getElementById("page-desc").content = excerpt;
+    document.getElementById("og-title").content = title;
+    document.getElementById("og-desc").content = excerpt;
+    document.getElementById("og-image").content = img;
+    document.getElementById("bc-title").textContent = title;
+
+    /* Hero */
+    document.getElementById("post-hero-img").style.backgroundImage = "url('" + img + "')";
+    document.getElementById("post-category-badge").textContent = cat;
+    document.getElementById("post-title").textContent = title;
+    document.getElementById("post-excerpt").textContent = excerpt;
+    document.getElementById("post-date").textContent = date;
+    document.getElementById("post-date").datetime = date;
+    document.getElementById("post-cat-text").textContent = catAr;
+
+    /* Body per language */
+    var bodyAr = (post.content && post.content.ar) ? post.content.ar : "<p>" + (post.excerpt.ar || "") + "</p>";
+    var bodyFr = (post.content && post.content.fr) ? post.content.fr : "<p>" + (post.excerpt.fr || bodyAr) + "</p>";
+    var bodyEn = (post.content && post.content.en) ? post.content.en : "<p>" + (post.excerpt.en || bodyAr) + "</p>";
+    var bodyEs = (post.content && post.content.es) ? post.content.es : "<p>" + (post.excerpt.es || bodyAr) + "</p>";
+
+    document.getElementById("body-ar").innerHTML = bodyAr;
+    document.getElementById("body-fr").innerHTML = bodyFr;
+    document.getElementById("body-en").innerHTML = bodyEn;
+    document.getElementById("body-es").innerHTML = bodyEs;
+
+    /* Show correct body based on current language */
+    document.querySelectorAll(".post-body").forEach(function(el) { el.style.display = "none"; });
+    document.getElementById("body-" + lang).style.display = "block";
+
+    /* Share links */
+    var shareUrl = siteUrl + "/blog/" + post.slug + ".html";
+    var shareText = title + " — Ksar Sghir";
+    document.getElementById("share-whatsapp").href = "https://wa.me/?text=" + encodeURIComponent(shareText + "\n" + shareUrl);
+    document.getElementById("share-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl);
+
+    /* Language switch for body */
+    document.querySelectorAll(".lang-btn").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var l = this.getAttribute("data-lang");
+        document.querySelectorAll(".post-body").forEach(function(el) { el.style.display = "none"; });
+        var bodyEl = document.getElementById("body-" + l);
+        if (bodyEl) bodyEl.style.display = "block";
+        var t = post.title[l] || post.title.ar;
+        document.getElementById("post-title").textContent = t;
+        document.getElementById("post-excerpt").textContent = post.excerpt[l] || post.excerpt.ar;
+        document.getElementById("post-category-badge").textContent = post.category[l] || post.category.ar;
+        document.title = t + " | Ksar Sghir Blog";
+      });
+    });
+
+    /* Related posts (same category) */
+    var related = allPosts.filter(function(p) {
+      return p.slug !== post.slug && p.category.ar === catAr;
+    }).slice(0, 3);
+    if (related.length === 0) {
+      related = allPosts.filter(function(p) { return p.slug !== post.slug; }).slice(0, 3);
+    }
+    var relHtml = "";
+    related.forEach(function(p) {
+      var t = p.title[lang] || p.title.ar;
+      var c = p.category[lang] || p.category.ar;
+      relHtml += '<article class="post-card"><div class="post-card__thumb" style="background-image:url(\'' + p.image + '\')"><span class="post-card__category">' + c + '</span></div><div class="post-card__body"><time class="post-card__date">' + p.date + '</time><h3 class="post-card__title"><a href="post.html?slug=' + p.slug + '">' + t + '</a></h3></div></article>';
+    });
+    document.getElementById("related-posts").innerHTML = relHtml;
+
+    /* Show content */
+    document.getElementById("post-loading").style.display = "none";
+    document.getElementById("post-content").style.display = "block";
+  }
+
+  function show404() {
+    document.getElementById("post-loading").style.display = "none";
+    document.getElementById("post-404").style.display = "block";
+  }
+
+  function copyPostLink() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      alert("تم نسخ الرابط!");
+    });
+  }
+  </script>
+</body>
+</html>

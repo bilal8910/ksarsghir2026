@@ -550,7 +550,7 @@ function generatePostHTML() {
   a.href = URL.createObjectURL(blob);
   a.download = slug + '.html';
   a.click();
-  showAlert('تم توليد الصفحة: ' + slug + '.html — ضعها في مجلد blog/', 'success');
+  showAlert('تم توليد الصفحة: ' + slug + '.html — الروابط تعمل تلقائياً عبر post.html?slug=' + slug, 'success');
 }
 
 /* ---------- PREVIEW ---------- */

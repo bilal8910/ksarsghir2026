@@ -73,7 +73,7 @@
           var date = post.date;
           var img = post.image;
           var slug = post.slug;
-          html += '<article class="post-card"><div class="post-card__thumb" style="background-image:url(\'' + img + '\')"><span class="post-card__category">' + cat + '</span></div><div class="post-card__body"><time class="post-card__date" datetime="' + date + '">' + date + '</time><h2 class="post-card__title"><a href="' + slug + '.html">' + title + '</a></h2><p class="post-card__excerpt">' + excerpt + '</p><a href="' + slug + '.html" class="post-card__read-more" data-i18n="blog-read-more">اقرأ المزيد ←</a></div></article>';
+          html += '<article class="post-card"><div class="post-card__thumb" style="background-image:url(\'' + img + '\')"><span class="post-card__category">' + cat + '</span></div><div class="post-card__body"><time class="post-card__date" datetime="' + date + '">' + date + '</time><h2 class="post-card__title"><a href="post.html?slug=' + slug + '">' + title + '</a></h2><p class="post-card__excerpt">' + excerpt + '</p><a href="post.html?slug=' + slug + '" class="post-card__read-more" data-i18n="blog-read-more">اقرأ المزيد ←</a></div></article>';
         });
         grid.innerHTML = html;
       })
